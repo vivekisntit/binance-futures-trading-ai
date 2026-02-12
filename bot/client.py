@@ -5,19 +5,18 @@ from bot import API_KEY, API_SECRET
 
 logger = logging.getLogger(__name__)
 
-
 class BinanceFuturesClient:
     def __init__(self):
         if not API_KEY or not API_SECRET:
             raise ValueError("API credentials not found. Check your .env file.")
 
-        self.client = Client(API_KEY, API_SECRET)
-
-        # Override to use Futures Testnet
-        self.client.FUTURES_URL = "https://testnet.binancefuture.com/fapi"
-
+        # Initialize the client specifically for Testnet
+        # This automatically sets the correct URLs for you
+        self.client = Client(API_KEY, API_SECRET, testnet=True)
+        
+        # Explicitly remove the manual URL overrides you had. 
+        # The library handles this when testnet=True.
         logger.info("Binance Futures Testnet client initialized.")
-
     def place_order(self, symbol, side, order_type, quantity, price=None):
         try:
             logger.info(f"Placing order: {symbol} | {side} | {order_type} | Qty: {quantity} | Price: {price}")
