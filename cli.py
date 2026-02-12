@@ -45,6 +45,7 @@ def main():
     if "error" in response:
         print(response["error"])
     else:
+        print("Order executed successfully!")
         print(f"Order ID: {response['orderId']}")
         print(f"Status: {response['status']}")
         print(f"Executed Qty: {response['executedQty']}")
