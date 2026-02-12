@@ -1,3 +1,4 @@
+import json
 import logging
 from binance.client import Client
 from binance.exceptions import BinanceAPIException, BinanceRequestException
@@ -17,6 +18,7 @@ class BinanceFuturesClient:
         # Explicitly remove the manual URL overrides you had. 
         # The library handles this when testnet=True.
         logger.info("Binance Futures Testnet client initialized.")
+    
     def place_order(self, symbol, side, order_type, quantity, price=None):
         try:
             logger.info(f"Placing order: {symbol} | {side} | {order_type} | Qty: {quantity} | Price: {price}")
@@ -34,6 +36,8 @@ class BinanceFuturesClient:
 
             response = self.client.futures_create_order(**params)
 
+            api_logger = logging.getLogger("api_logger")
+            api_logger.info(json.dumps(response))
             logger.info(f"Order response: {response}")
 
             return response
