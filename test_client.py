@@ -1,8 +1,6 @@
-from bot.client import BinanceFuturesClient
+from bot.orders import execute_order
 
-client = BinanceFuturesClient()
-
-response = client.place_order(
+response = execute_order(
     symbol="BTCUSDT",
     side="BUY",
     order_type="MARKET",
