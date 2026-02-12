@@ -6,10 +6,8 @@ from bot.orders import execute_order
 
 
 def main():
-    # Setup logging first
     setup_logging()
     logger = logging.getLogger(__name__)
-
     parser = argparse.ArgumentParser(
         description="Binance Futures Testnet Trading Bot"
     )
@@ -19,9 +17,9 @@ def main():
     parser.add_argument("--type", required=True, help="Order type (MARKET or LIMIT)")
     parser.add_argument("--quantity", required=True, type=float, help="Order quantity")
     parser.add_argument("--price", type=float, help="Price (required for LIMIT orders)")
+    parser.add_argument("--stop_price", type=float, help="Stop trigger price (required for STOP orders)")
 
     args = parser.parse_args()
-
     logger.info("CLI arguments received.")
 
     print("\n===== Order Request Summary =====")
@@ -37,9 +35,9 @@ def main():
         side=args.side.upper(),
         order_type=args.type.upper(),
         quantity=args.quantity,
-        price=args.price
+        price=args.price,
+        stop_price=args.stop_price
     )
-
     print("\n===== Order Response =====")
 
     if "error" in response:
@@ -50,9 +48,7 @@ def main():
         print(f"Status: {response['status']}")
         print(f"Executed Qty: {response['executedQty']}")
         print(f"Average Price: {response['avgPrice']}")
-
     print("\n===============================")
-
 
 if __name__ == "__main__":
     main()

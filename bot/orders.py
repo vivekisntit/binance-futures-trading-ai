@@ -8,20 +8,19 @@ from bot.validators import (
     validate_order_type,
     validate_quantity,
     validate_price,
+    validate_stop_price,
     ValidationError
 )
 
 logger = logging.getLogger(__name__)
 
-
-def execute_order(symbol, side, order_type, quantity, price=None):
+def execute_order(symbol, side, order_type, quantity, price=None, stop_price=None):
     """
     High-level order execution logic.
     Handles validation, API call, and response formatting.
     """
 
     try:
-        # 1️⃣ Validate Inputs
         validate_symbol(symbol)
         validate_side(side)
         validate_order_type(order_type)
@@ -30,31 +29,41 @@ def execute_order(symbol, side, order_type, quantity, price=None):
 
         logger.info("All inputs validated successfully.")
 
-        # 2️⃣ Initialize Client
         client = BinanceFuturesClient()
 
-        # 3️⃣ Place Order
         response = client.place_order(
             symbol=symbol,
             side=side,
             order_type=order_type,
             quantity=quantity,
-            price=price
+            price=price,
+            stop_price=stop_price
         )
 
-        # 4️⃣ Format Clean Output
-        formatted_response = {
-            "orderId": response.get("orderId"),
-            "status": response.get("status"),
-            "symbol": response.get("symbol"),
-            "side": response.get("side"),
-            "type": response.get("type"),
-            "executedQty": response.get("executedQty"),
-            "avgPrice": response.get("avgPrice"),
-        }
+        if "orderId" in response:
+            formatted_response = {
+                "orderId": response.get("orderId"),
+                "status": response.get("status"),
+                "symbol": response.get("symbol"),
+                "side": response.get("side"),
+                "type": response.get("type"),
+                "executedQty": response.get("executedQty"),
+                "avgPrice": response.get("avgPrice"),
+            }
+        elif "algoId" in response:
+            formatted_response = {
+                "orderId": response.get("algoId"),
+                "status": response.get("algoStatus"),
+                "symbol": response.get("symbol"),
+                "side": response.get("side"),
+                "type": response.get("orderType"),
+                "executedQty": "0",
+                "avgPrice": "0",
+            }
+        else:
+            formatted_response = {"error": "Unknown response format received from Binance."}
 
         logger.info("Order executed successfully.")
-
         return formatted_response
 
     except ValidationError as ve:
