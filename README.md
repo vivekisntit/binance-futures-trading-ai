@@ -85,7 +85,7 @@ BINANCE_SECRET_KEY=ONLY_testnet_secret_key
 ```bash
 python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.07
 ```
-![Market/Limit](results\marketlimit.png)
+![Market/Limit](zmarketlimit.png)
 
 
 
@@ -93,21 +93,21 @@ python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.07
 ```bash
 python cli.py --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.02 --price 70000
 ```
-![Buy/Sell order](buysell.png)
+![Buy/Sell order](zbuysell.png)
 
 
 ### STOP order
 ```bash
 python cli.py --symbol BTCUSDT --side BUY --type STOP --quantity 0.02 --price 70000 --stop_price 69000
 ```
-![Stop order](results\stop.png)
+![Stop order](zstop.png)
 
 
 ### LOG folder
 #### Raw API LOG
 
-![Raw API LOG](results\raw_api_log.png)
+![Raw API LOG](zrawlog.png)
 
 #### Structured LOG
 
-![Structured LOG](results\structured_log.png)
+![Structured LOG](zstructured_log.png)
