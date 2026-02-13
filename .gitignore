@@ -2,7 +2,7 @@ venv/
 __pycache__/
 *.pyc
 .env
-.png
+*.png
 logs/
 .idea/
 .vscode/
